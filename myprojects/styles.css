@@ -1,3 +1,7 @@
+:root {
+    --text-color: rgb(78, 216, 254);
+}
+
 * {
     font-family: 'Arsenal', sans-serif;
     font-weight: bolder;
@@ -5,18 +9,20 @@
 }
 
 body {
-    background-color: rgb(124, 199, 252);
+    background-color: rgb(10, 82, 119);
 }
 
 #head-banner {
-    position: relative;
+    background-image: url('https://i.imgur.com/MF0CbXI.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border-bottom: 2px solid var(--text-color);
 }
 
 #head-banner h1 {
-    float: center;
-    position: absolute;
-    text-align: center;
-    color: rgb(124, 199, 252);
+    text-align: left;
+    color: var(--text-color);
     font-size: 52px;
 }
 
@@ -25,19 +31,45 @@ body {
     height: 12rem;
 }
 
-a {
-    text-decoration: none;
-    font-size: 30px;
+#container {
+    position: relative;
 }
 
-a:visited {
-    color: blue;
+a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bolder;
 }
 
 .page-tiles {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     height: 3rem;
-    border: 2px solid blanchedalmond;
+    text-align: center;
+    margin: auto;
+}
+
+.page-tiles #homepage {
+    height: 100%;
+    width: 33%;
+    background-color: green;
+}
+
+.page-tiles #about-me {
+    height: 100%;
+    width: 34%;
+    background-color: blue;
+}
+
+.page-tiles #contact {
+    height: 100%;
+    width: 33%;
+    background-color: red;
+}
+
+header {
+    color: var(--text-color);
+    text-align: center;
 }
