@@ -1,0 +1,79 @@
+* {
+    font-family: 'Arsenal', sans-serif;
+    font-weight: bolder;
+    margin: auto;
+}
+
+body {
+    background-color: rgb(124, 199, 252);
+}
+
+#head-banner {
+    position: relative;
+}
+
+#head-banner h1 {
+    float: center;
+    position: absolute;
+    text-align: center;
+    color: rgb(124, 199, 252);
+    font-size: 52px;
+}
+
+#head-banner img {
+    width: 100%;
+    height: 12rem;
+    border-bottom: 2px solid rgb(78, 216, 254);
+}
+
+a {
+    text-decoration: none;
+    font-size: 30px;
+}
+
+a:visited {
+    color: blue;
+}
+
+.page-tiles {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    height: 3rem;
+    margin: auto;
+    border: 2px solid blanchedalmond;
+}
+
+.about-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.about-container h2 {
+    font-size: 28px;   
+}
+
+.carousel-container {
+    width: 40%;
+    margin: 0;
+}
+
+.carousel-images {
+    width: 80%;
+    background: #4feafc;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.carousel-images img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+
+
+}
