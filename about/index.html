@@ -7,6 +7,7 @@
     <title>About Me</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Arsenal&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="head-banner">
@@ -14,24 +15,26 @@
     </div>
 
     <nav class="page-tiles">
-        <a id="homepage" href="/index.html">Home Page</a>
-        <a id="portfolio" href="/myprojects/index.html">Portfolio</a>
-        <a id="contact" href="/contact/index.html">Contact</a>
+        <a id="homepage" class="pagenav" href="/index.html">Home Page</a>
+        <a id="portfolio" class="pagenav" href="/myprojects/index.html">Portfolio</a>
+        <a id="contact" class="pagenav" href="/contact/index.html">Contact</a>
     </nav>
     
     <div class="about-container">
-        <h2>About me</h2>
-        <p>Born in Winston-Salem, NC. I started in Computer Science at Baylor University in 2010, I didn't get very far. I ended up bouncing around colleges/degree plans until I ended up graduating from William Peace University in 2016 with a BA in Similuation in Game Design (3D Modeling.) I ended up work</p>
+        <div class="aboutme-blurb">
+            <h2>About Me</h2>
+            <p>I made attempts while in college to earn a degree in Computer Science, but was unsucessful. I ended up bouncing around colleges/degree paths until I graduated from William Peace University in 2016 with a degree in Similuation in Game Design (3D Modeling.) From there, I worked at two different companies in Finance up until October of this year (2023.)</p>
+        </div>
         <div class="carousel-container">
-            <div class="carousel-previous-btn">
-                <!--To add img link for button-->
+            <div class="carousel-btn previous">
+                <img src="https://i.imgur.com/LqfhBEH.png" alt="previous image">
             </div>
             <div class="carousel-images">
-                <img src="https://i.imgur.com/wVXdFXY.jpg" alt="Me in Ireland">
-                <img src="https://i.imgur.com/cWPNF0K.jpg" alt="Photo of Me">
+                <img src="https://i.imgur.com/wVXdFXY.jpg" alt="Me in Ireland" class="images">
+                <img src="https://i.imgur.com/ZbINzPO.jpg" alt="Photo of Us" class="images">
             </div>
-            <div class="carousel-next-btn">
-                <!--To add img link for button-->
+            <div class="carousel-btn next">
+                <img src="https://i.imgur.com/AlMEQ1b.png" alt="next image">
             </div>
 
         </div>

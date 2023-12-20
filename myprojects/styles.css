@@ -23,6 +23,7 @@ body {
 #head-banner h1 {
     text-align: left;
     color: var(--text-color);
+    padding: 1rem;
     font-size: 52px;
 }
 
@@ -44,32 +45,22 @@ a {
 
 .page-tiles {
     display: flex;
-    flex-flow: row wrap;
+    flex-direction: row;
     justify-content: space-between;
     height: 3rem;
     text-align: center;
     margin: auto;
 }
 
-.page-tiles #homepage {
+.pagenav {
     height: 100%;
     width: 33%;
-    background-color: green;
-}
-
-.page-tiles #about-me {
-    height: 100%;
-    width: 34%;
-    background-color: blue;
-}
-
-.page-tiles #contact {
-    height: 100%;
-    width: 33%;
-    background-color: red;
+    background-image: linear-gradient(rgb(139,249,254),rgb(11,20,33), rgb(70,126,162));
+    border-style: groove;
 }
 
 header {
     color: var(--text-color);
+    padding: 1rem;
     text-align: center;
 }
