@@ -7,7 +7,7 @@
     <title>Projects</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Arsenal&display=swap" rel="stylesheet">
-    <script src="wordle.js"></script>
+    <script src="wordle.js" defer></script>
 </head>
 <body>
     <div id="head-banner">
@@ -21,11 +21,21 @@
         <header>
             <h1>Projects I've worked on:</h1>
         </header>
-        <div class="wordle.container"></div>
 
-        <footer>
+        <div id="game-title">
+            <h1>Wordle</h1>
+        </div>
+        <div id="game-container">
+            <div id="wordle-board-container">
+                <div id="wordle-game-board">
 
-        </footer>
+                </div>
+            </div>
+            
+        </div>
+        <div class="start">
+            <button id="startbtn">Start Game</button>
+        </div>   
     </div>
 </body>
 </html>

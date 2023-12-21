@@ -2,6 +2,7 @@
 -------------------------------------------------*/
 let currentImageNum = 0;
 let previousImageNum = 0;
+
 const images = document.getElementsByClassName('images');
 const prevImage = document.querySelector('.previous');
 const nextImage = document.querySelector('.next');

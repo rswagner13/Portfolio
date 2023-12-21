@@ -79,11 +79,16 @@ a {
 #welcome-info {
     text-align: center;
     width: 50%;
-    height: 25%;
+    height: 30%;
 }
 
 #welcome-info h2 {
-    font-size: 34px;
+    font-size: 38px;
+    padding-bottom: 10px;
+}
+
+#welcome-info p {
+    font-size: 20px;
 }
 
 @media (max-width: 600px) {
