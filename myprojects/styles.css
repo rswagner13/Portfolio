@@ -4,7 +4,6 @@
 
 * {
     font-family: 'Arsenal', sans-serif;
-    font-weight: bolder;
     margin: auto;
 }
 
@@ -83,8 +82,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
-    overflow: hidden;
 }
 
 #wordle-game-board {
@@ -100,8 +97,37 @@ header {
     border: 2px solid rgb(25,212,230);
     min-width: 80px;
     min-height: 80px;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+}
+
+#keyboard {
+    display: flex;
+    height: 100%;
+}
+
+.keyboard-keys {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 4px;
+    border: 2px solid red;
+}
+
+.keys {
+    min-width: 4rem;
+    min-height: 4rem;
+    text-align: center;
+}
+
+#delete {
+
+}
+
+#enter {
+
 }
 
 #startbtn {
