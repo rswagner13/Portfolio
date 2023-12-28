@@ -110,5 +110,13 @@ a {
 
 @media (max-width: 600px) {
 
+    .about-container p {
+        font-size: 14px;
+        padding: 2px;
+    }
+
+    #head-banner h1 {
+        padding: 0.5rem;
+    }
 
 }

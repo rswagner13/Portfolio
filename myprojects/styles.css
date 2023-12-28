@@ -95,8 +95,8 @@ header {
 
 .wordle-char-tiles {
     border: 2px solid rgb(25,212,230);
-    min-width: 80px;
-    min-height: 80px;
+    min-width: 70px;
+    min-height: 70px;
     font-size: 3rem;
     font-weight: bold;
     color: var(--text-color);
@@ -104,14 +104,14 @@ header {
 }
 
 #keyboard {
-    display: flex;
+    display: none;
     height: 100%;
 }
 
-.keyboard-keys {
+#keyboard-keys {
     display: grid;
-    justify-content: center;
     grid-template-columns: repeat(6, 1fr);
+    justify-content: center;
     grid-gap: 4px;
     border: 2px solid red;
 }
@@ -119,18 +119,32 @@ header {
 .keys {
     min-width: 4rem;
     min-height: 4rem;
-    text-align: center;
+    border-radius: 10px;
 }
 
-#delete {
-
+/* #delete {
+    
 }
 
 #enter {
 
-}
+} */
 
 #startbtn {
     display: block;
+}
+
+@media (max-width: 600px) {
+    #head-banner h1 {
+        padding: 0.5rem;
+    }
+
+    header {
+        font-size: 20px;
+    }
+
+    #game-title {
+        font-size: 18px;
+    }
 }
 

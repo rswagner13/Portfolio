@@ -2,19 +2,18 @@
 -------------------------------------------------- */
 let numOfGuesses = 6;
 let playerGuess = [];
-let playerGuessNumber = 1;
-const rows = 6;
-const columns = 5;
+let playerGuessedWords = [[]];
+let tilesAvailable = 1;
 let gameOver = false;
 
 /* Initializing an array that contains all the choices the game can pick
 ------------------------------------------------------------------------- */
-let wordleWords = ['index', 'fight', 'ditch', 'pitch', 'cliff', 'tower', 'match', 'range'];
+// import {wordleWords} from './words.js';
 
 /* Draw wordle board onto screen when the player presses the 
 Start Game button
 --------------------------------------------------- */
-function createGameTiles () {
+function createGameWindow () {
     const wordleGameBoard = document.getElementById("wordle-game-board");
     
     for (let i = 1; i <= 30; i++) {
@@ -24,37 +23,90 @@ function createGameTiles () {
 
         wordleGameBoard.appendChild(tileSquare);
     }
+
+    const addKeyboard = document.getElementById('keyboard');
+    addKeyboard.style.display = 'flex';
 }
 
+/* Computer randomly chooses the word the player has to guess
+------------------------------------------------------------- */
+// const wordleWordChoice = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+
+const computerChoice = 'venus';
+/*--------------------------------------------------------------------*/
+function currentWordGuess () {
+    const numWordsGuessed = playerGuessedWords.length;
+    return playerGuessedWords[numWordsGuessed-1];
+}
+
+/*--------------------------------------------------------------------*/
+function updateGameTiles(buttonLetter) {
+    let currentWord = currentWordGuess();
+    if (currentWord && currentWord.length < 5) {
+        currentWord.push(buttonLetter);
+
+        const tilesAvailableEl = document.getElementById(String(tilesAvailable));
+        tilesAvailable++;
+
+        tilesAvailableEl.textContent = buttonLetter;
+    }
+}
+
+/*----------------------------------------------------------------------*/
+function submitPlayerGuess() {
+    let currentWord = currentWordGuess();
+    if (currentWord.length !== 5) {
+        window.alert("Word must be 5 letters");
+    }
+
+    const convertedCurrentWord = currentWord.join("");
+    if (convertedCurrentWord === computerChoice) {
+        window.alert("You guessed correctly. Congratulations!");
+    }
+};
+
+/* Assigning the contents to the 'startbtn' id to startGame, and then adding an event listener that will make the button disapear and will add the game tiles and keyboard to the screen
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const startGame = document.getElementById('startbtn');
 
 startGame.addEventListener('click', () => {
     startGame.style.display = 'none';
-    createGameTiles();
+    createGameWindow();
 });
 
-/* Computer randomly chooses the word the player has to guess
-------------------------------------------------------------- */
-let wordleWordChoice = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+/* Assign each button under the "keyboard-keys" class a click event that will put it's assigned character into the appropriate game tile on the board
+---------------------------------------------------------------------------------------------------------------------------------------------------------*/
+let computerKeys = document.getElementById('keyboard-keys');
+computerKeys.addEventListener('click', handleClick);
 
 
-/* Game begins. A while loop runs until the player picks the word th computer picked, or when the number of guesses remaining are zero
---------------------------------------------------------------------------*/
-    // 1. Game ask the user to type in their word choice as long as it contains 5 letter characters. These characters should appear in the tiles on the row associated with the current guess number
-let computerKeys = document.getElementsByClassName('keys');
+function handleClick(e) {
+    if (e.target.tagName !== 'BUTTON') {
+        return
+    } else if (e.target.id === 'enter') {
+        submitPlayerGuess();
+        return;
+    } else if (e.target.id === 'delete') {
+        removeLetter();
+        return;
+    }
 
-for(let i = 1; i <= 28; i++) {
-
+    updateGameTiles(e.target.innerText);
 }
+
+
+
+
+
+/* Game begins.
+--------------------------------------------------------------------------*/
+
+// 1.a The program will make sure that the user is unable to add additional characters after entering five of them, unless they delete a character(s) they entered
+
+// 2.a The game checks to see if the word the user entered matches what the computer chose. If true, set gameOver to true, turn all tiles on that row green, and display a message that you won.
+
+// 2.b Otherwise, subract one from number of guesses
     
-    // 1.a The program will make sure the user cannot use keys other than A-Z, backspace/delete, and enter
+// 2.c The game will check to see if any character positions in the user's choice matches the computer's choice. If true, tiles will turn green
 
-    // 1.b The program will also make sure that the user is unable to add additional characters after entering five of them, unless they delete a character(s) they entered
-
-    // 2.a The game checks to see if the word the user entered matches what the computer chose. If true, set gameOver to true, turn all tiles on that row green, and display a message that you won.
-
-    // 2.b Otherwise, subract one from number of guesses
-    
-    // 2.c The game will check to see if any character positions in the user's choice matches the computer's choice. If true, tiles will turn green
-
-    // 2.d if not, the game will check to see if any characters in the user's choice appear in the computer's choice. If true, those tiles will turn yellow
+// 2.d if not, the game will check to see if any characters in the user's choice appear in the computer's choice. If true, those tiles will turn yellow
