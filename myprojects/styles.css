@@ -75,6 +75,7 @@ header {
 
 #game-container {
     display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
@@ -122,13 +123,6 @@ header {
     border-radius: 10px;
 }
 
-/* #delete {
-    
-}
-
-#enter {
-
-} */
 
 #startbtn {
     display: block;

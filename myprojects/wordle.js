@@ -1,6 +1,6 @@
 /* Initialize global variables for Wordle
 -------------------------------------------------- */
-let numOfGuesses = 6;
+let numOfGuesses = 0;
 let playerGuess = [];
 let playerGuessedWords = [[]];
 let tilesAvailable = 1;
@@ -32,7 +32,25 @@ function createGameWindow () {
 ------------------------------------------------------------- */
 // const wordleWordChoice = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
 
-const computerChoice = 'venus';
+const computerChoice = 'VENUS';
+/*--------------------------------------------------------------------*/
+function tileGuessColor (key, i) {
+    const correctLetter = computerChoice.includes(key);
+    console.log(correctLetter);
+
+    if (correctLetter !== true) {
+        return 'red';
+    }
+
+    const characterPosition = computerChoice.charAt(i);
+    const isCorrectPosition = key === characterPosition;
+
+    if (isCorrectPosition === true) {
+        return 'green';
+    }
+    
+    return 'orange';
+};
 /*--------------------------------------------------------------------*/
 function currentWordGuess () {
     const numWordsGuessed = playerGuessedWords.length;
@@ -53,16 +71,35 @@ function updateGameTiles(buttonLetter) {
 }
 
 /*----------------------------------------------------------------------*/
-function submitPlayerGuess() {
+function submitPlayerGuess(char) {
     let currentWord = currentWordGuess();
+
     if (currentWord.length !== 5) {
         window.alert("Word must be 5 letters");
     }
-
+ 
     const convertedCurrentWord = currentWord.join("");
+
+    const firstWordLetter = numOfGuesses * 5 + 1;
+
+    currentWord.forEach((char,i) => {
+
+        const tileColor = tileGuessColor(char, i);
+
+        const tileID = firstWordLetter + i;
+        const tileEl = document.getElementById(tileID);
+        tileEl.style = `background-color: ${tileColor}`;
+    });
+
     if (convertedCurrentWord === computerChoice) {
         window.alert("You guessed correctly. Congratulations!");
     }
+
+    if (playerGuessedWords.length === 6) {
+        window.alert("Game Over");
+    }
+
+    playerGuessedWords.push([]);
 };
 
 /* Assigning the contents to the 'startbtn' id to startGame, and then adding an event listener that will make the button disapear and will add the game tiles and keyboard to the screen
@@ -79,12 +116,12 @@ startGame.addEventListener('click', () => {
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
 
-
 function handleClick(e) {
     if (e.target.tagName !== 'BUTTON') {
         return
     } else if (e.target.id === 'enter') {
         submitPlayerGuess();
+        numOfGuesses++;
         return;
     } else if (e.target.id === 'delete') {
         removeLetter();
@@ -92,7 +129,7 @@ function handleClick(e) {
     }
 
     updateGameTiles(e.target.innerText);
-}
+};
 
 
 
