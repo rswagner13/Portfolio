@@ -116,6 +116,7 @@ startGame.addEventListener('click', () => {
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
 
+
 function handleClick(e) {
     if (e.target.tagName !== 'BUTTON') {
         return
