@@ -1,14 +1,25 @@
-/* Initialize global variables for Wordle
+ /* Initialize global variables for Wordle
 -------------------------------------------------- */
 let numOfGuesses = 0;
-let playerGuess = [];
 let playerGuessedWords = [[]];
 let tilesAvailable = 1;
 let gameOver = false;
 
 /* Initializing an array that contains all the choices the game can pick
 ------------------------------------------------------------------------- */
-// import {wordleWords} from './words.js';
+import {wordleWords} from './words.js';
+
+/* Computer randomly chooses the word the player has to guess
+------------------------------------------------------------- */
+const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+const computerWordChoice = makeWordUppercase(randomWord);
+
+console.log(computerWordChoice);
+
+
+
+
+
 
 /* Draw wordle board onto screen when the player presses the 
 Start Game button
@@ -28,21 +39,67 @@ function createGameWindow () {
     addKeyboard.style.display = 'flex';
 }
 
-/* Computer randomly chooses the word the player has to guess
-------------------------------------------------------------- */
-// const wordleWordChoice = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+/* Assign each button under the "keyboard-keys" class a click event that will put it's assigned character into the appropriate game tile on the board
+---------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-const computerChoice = 'VENUS';
+function handleClick(buttonClick) {
+    if (buttonClick.target.tagName !== 'BUTTON') {
+        return;
+    } else if (buttonClick.target.id === 'enter') {
+        submitPlayerGuess();
+        numOfGuesses++;
+        return;
+    } else if (buttonClick.target.id === 'delete') {
+        removeLetter();
+        return;
+    }
+    updateGameTile(buttonClick.target.innerText);
+}
+
+/*----------------------------------------------------------------------*/
+function submitPlayerGuess() {
+    let currentGuessArray = currentWordGuess();
+
+    if (currentGuessArray.length !== 5) {
+        window.alert("Word must be 5 letters");
+    }
+
+    const currentWordString = currentGuessArray.join("");
+
+    const firstWordLetter = numOfGuesses * 5 + 1;
+
+    currentGuessArray.forEach((charKey, i) => {
+        const tileColor = tileGuessColor(charKey, i);
+
+        const tileID = firstWordLetter + i;
+        const tileEl = document.getElementById(tileID);
+        console.log(tileEl);
+        tileEl.style = `background-color: ${tileColor}`;
+    });
+
+    if (currentWordString === computerWordChoice) {
+        window.alert("You guessed correctly. Congratulations!");
+    }
+
+    if (playerGuessedWords.length === 6) {
+        window.alert("Game Over");
+    }
+
+    playerGuessedWords.push([]);
+}
+
 /*--------------------------------------------------------------------*/
 function tileGuessColor (key, i) {
-    const correctLetter = computerChoice.includes(key);
-    console.log(correctLetter);
-
+    const correctLetter = computerWordChoice.includes(key);
     if (correctLetter !== true) {
+        const incorrectLetterEl = document.getElementById(key);
+        console.log(incorrectLetterEl);
+        incorrectLetterEl.style.backgroundColor = 'blue';
+        incorrectLetterEl.removeEventListener('click', handleClick);
         return 'red';
     }
 
-    const characterPosition = computerChoice.charAt(i);
+    const characterPosition = computerWordChoice.charAt(i);
     const isCorrectPosition = key === characterPosition;
 
     if (isCorrectPosition === true) {
@@ -50,15 +107,16 @@ function tileGuessColor (key, i) {
     }
     
     return 'orange';
-};
+}
 /*--------------------------------------------------------------------*/
 function currentWordGuess () {
     const numWordsGuessed = playerGuessedWords.length;
     return playerGuessedWords[numWordsGuessed-1];
+
 }
 
 /*--------------------------------------------------------------------*/
-function updateGameTiles(buttonLetter) {
+function updateGameTile(buttonLetter) {
     let currentWord = currentWordGuess();
     if (currentWord && currentWord.length < 5) {
         currentWord.push(buttonLetter);
@@ -70,40 +128,14 @@ function updateGameTiles(buttonLetter) {
     }
 }
 
-/*----------------------------------------------------------------------*/
-function submitPlayerGuess(char) {
-    let currentWord = currentWordGuess();
+/* Makes the word that the computer randomly chose uppercase 
+--------------------------------------------------------------------*/
+function makeWordUppercase(wordChoice) {
+    return wordChoice.toUpperCase();
+}
 
-    if (currentWord.length !== 5) {
-        window.alert("Word must be 5 letters");
-    }
- 
-    const convertedCurrentWord = currentWord.join("");
-
-    const firstWordLetter = numOfGuesses * 5 + 1;
-
-    currentWord.forEach((char,i) => {
-
-        const tileColor = tileGuessColor(char, i);
-
-        const tileID = firstWordLetter + i;
-        const tileEl = document.getElementById(tileID);
-        tileEl.style = `background-color: ${tileColor}`;
-    });
-
-    if (convertedCurrentWord === computerChoice) {
-        window.alert("You guessed correctly. Congratulations!");
-    }
-
-    if (playerGuessedWords.length === 6) {
-        window.alert("Game Over");
-    }
-
-    playerGuessedWords.push([]);
-};
-
-/* Assigning the contents to the 'startbtn' id to startGame, and then adding an event listener that will make the button disapear and will add the game tiles and keyboard to the screen
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Game begins when the user clicks on the start button
+----------------------------------------------------------------------------------------------*/
 const startGame = document.getElementById('startbtn');
 
 startGame.addEventListener('click', () => {
@@ -111,33 +143,11 @@ startGame.addEventListener('click', () => {
     createGameWindow();
 });
 
-/* Assign each button under the "keyboard-keys" class a click event that will put it's assigned character into the appropriate game tile on the board
----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------*/
+
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
 
-
-function handleClick(e) {
-    if (e.target.tagName !== 'BUTTON') {
-        return
-    } else if (e.target.id === 'enter') {
-        submitPlayerGuess();
-        numOfGuesses++;
-        return;
-    } else if (e.target.id === 'delete') {
-        removeLetter();
-        return;
-    }
-
-    updateGameTiles(e.target.innerText);
-};
-
-
-
-
-
-/* Game begins.
---------------------------------------------------------------------------*/
 
 // 1.a The program will make sure that the user is unable to add additional characters after entering five of them, unless they delete a character(s) they entered
 
