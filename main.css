@@ -39,7 +39,6 @@ body {
 a {
     color: var(--text-color);
     text-decoration: none;
-    font-size: 30px;
     font-weight: bolder;
 }
 
@@ -50,6 +49,7 @@ a {
     height: 3rem;
     text-align: center;
     margin: auto;
+    font-size: 30px;
 }
 
 .pagenav {

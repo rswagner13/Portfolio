@@ -4,27 +4,32 @@ let numOfGuesses = 0;
 let playerGuessedWords = [[]];
 let tilesAvailable = 1;
 
-/* Initializing an array that contains all the choices the game can pick
+/* Importing the list of possible words for the computer to choose from
 ------------------------------------------------------------------------- */
 import {wordleWords} from './words.js';
 
-/* Computer randomly chooses the word the player has to guess
-------------------------------------------------------------- */
-const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
-const computerWordChoice = makeWordUppercase(randomWord);
 
-console.log(computerWordChoice);
+/*---------------------------------------------FUNCTIONS-------------------------------------------------------------*/
 
-/* Draw wordle board onto screen when the player presses the 
-Start Game button
+
+/* Makes the word that the computer randomly chose uppercase 
+--------------------------------------------------------------------*/
+function makeWordUppercase(wordChoice) {
+    return wordChoice.toUpperCase();
+}
+
+/* Draw wordle board onto screen when the player presses the start button
 --------------------------------------------------- */
 function createGameWindow () {
-    const wordleGameBoard = document.getElementById("wordle-game-board");
+    gameStartMessage();
+
+    const wordleGameBoard = document.getElementById('wordle-game-board');
+    wordleGameBoard.style = 'border: 10px solid black';
     
     for (let i = 1; i <= 30; i++) {
-        let tileSquare = document.createElement("div");
-        tileSquare.classList.add("wordle-char-tiles");
-        tileSquare.setAttribute("id", i);
+        let tileSquare = document.createElement('div');
+        tileSquare.classList.add('wordle-char-tiles');
+        tileSquare.setAttribute('id', i);
 
         wordleGameBoard.appendChild(tileSquare);
     }
@@ -33,15 +38,32 @@ function createGameWindow () {
     addKeyboard.style.display = 'flex';
 }
 
-/* Assign each button under the "keyboard-keys" class a click event that will put it's assigned character into the appropriate game tile on the board
----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Displays a modal with a good luck message for the player
+--------------------------------------------------- */
+function gameStartMessage() {
+    const wordleModalStart = document.getElementById('modal');
+    wordleModalStart.style.display = 'flex';
 
+    const modalTextBox = document.getElementById('modal-info');
+    const startMessage = document.createElement('h1');
+    startMessage.classList.add('modal-text');
+    modalTextBox.appendChild(startMessage);
+    startMessage.innerText = "Good Luck!"
+
+    setTimeout(() => {
+        modalTextBox.removeChild(startMessage);
+        wordleModalStart.style.display = 'none';
+    }, 2000);
+        
+}
+
+/* Assign each button under the "keyboard-keys" class a click event that will put it's assigned character into the appropriate game tile on the board
+------------------------------------------------------------------------------------------------------------------*/
 function handleClick(buttonClick) {
     if (buttonClick.target.tagName !== 'BUTTON') {
         return;
     } else if (buttonClick.target.id === 'enter') {
         submitPlayerGuess();
-        numOfGuesses++;
         return;
     } else if (buttonClick.target.id === 'delete') {
         removeLetter();
@@ -55,31 +77,45 @@ function submitPlayerGuess() {
     const currentGuessArray = currentWordGuess();
 
     if (currentGuessArray.length !== 5) {
-        window.alert("Word must be 5 letters");
+        const modalBox = document.getElementById('modal');
+        const modalTextBox = document.getElementById('modal-info');
+        const errorMessage = document.createElement('h1');
+
+        errorMessage.classList.add('modal-text');
+        modalTextBox.appendChild(errorMessage)
+        modalBox.style.display = 'flex';
+        errorMessage.innerText = 'Error: Word must be 5 characters long.';
+
+        setTimeout(() => {
+            modalTextBox.removeChild(errorMessage);
+            modalBox.style.display = 'none';
+        }, 2000);
+
+    } else {
+        const currentWordString = currentGuessArray.join('');
+
+        const firstWordLetter = numOfGuesses * 5 + 1;
+    
+        currentGuessArray.forEach((charKey, i) => {
+            const tileColor = tileGuessColor(charKey, i);
+    
+            const tileID = firstWordLetter + i;
+            const tileEl = document.getElementById(tileID);
+            tileEl.style = `background-color: ${tileColor}`;
+        });
+    
+        if (currentWordString === computerWordChoice) {
+            gameCompleted();
+        }
+    
+        if (playerGuessedWords.length === 6) {
+            gameOverMessage();
+        }
+    
+        playerGuessedWords.push([]);
+        numOfGuesses++;
     }
 
-    const currentWordString = currentGuessArray.join("");
-
-    const firstWordLetter = numOfGuesses * 5 + 1;
-
-    currentGuessArray.forEach((charKey, i) => {
-        const tileColor = tileGuessColor(charKey, i);
-
-        const tileID = firstWordLetter + i;
-        const tileEl = document.getElementById(tileID);
-        console.log(tileEl);
-        tileEl.style = `background-color: ${tileColor}`;
-    });
-
-    if (currentWordString === computerWordChoice) {
-        gameCompleted();
-    }
-
-    if (playerGuessedWords.length === 6) {
-        window.alert("Game Over");
-    }
-
-    playerGuessedWords.push([]);
 }
 
 /*--------------------------------------------------------------------*/
@@ -94,6 +130,7 @@ function removeLetter() {
     removedLetterEl.innerText = '';
     tilesAvailable--;
 }
+
 /*--------------------------------------------------------------------*/
 function tileGuessColor (key, i) {
     const correctLetter = computerWordChoice.includes(key);
@@ -110,18 +147,18 @@ function tileGuessColor (key, i) {
         return 'green';
     }
     
-    return 'orange';
+    return 'yellow';
 }
+
 /*--------------------------------------------------------------------*/
 function currentWordGuess () {
     const numWordsGuessed = playerGuessedWords.length;
     return playerGuessedWords[numWordsGuessed-1];
-
 }
 
 /*--------------------------------------------------------------------*/
 function updateGameTile(buttonLetter) {
-    let currentWord = currentWordGuess();
+    const currentWord = currentWordGuess();
     if (currentWord && currentWord.length < 5) {
         currentWord.push(buttonLetter);
 
@@ -132,14 +169,58 @@ function updateGameTile(buttonLetter) {
     }
 }
 
-/* Makes the word that the computer randomly chose uppercase 
---------------------------------------------------------------------*/
-function makeWordUppercase(wordChoice) {
-    return wordChoice.toUpperCase();
+/*--------------------------------------------------------------------*/
+function gameCompleted () {
+    const modalBox = document.getElementById('modal');
+    const modalTextBox = document.getElementById('modal-info');
+    const winnerMessage = document.createElement('h1');
+    const gameChoices = document.createElement('div');
+    const replay = document.createElement('div');
+    const gameOver = document.createElement('div');
+
+    modalBox.style.display = 'flex';
+    winnerMessage.classList.add('modal-text');
+    modalTextBox.appendChild(winnerMessage);
+
+    if ((numOfGuesses + 1) === 1) {
+        winnerMessage.innerText = `Holy cow! You guessed the correct word in one guess! Would you like to play again?`;
+
+        gameChoices.setAttribute('id','choice-container');
+        modalTextBox.append(gameChoices)
+        gameChoices.appendChild(replay);
+        gameChoices.appendChild(gameOver);
+
+    replay.innerText = 'Play Again';
+    gameOver.innerText = 'End Game';
+    }
+
+    winnerMessage.innerText = `Congratulations, you guessed the correct word in ${numOfGuesses + 1} guesses! Would you like to play again?`;
+
+    gameChoices.setAttribute('id','choice-container');
+    modalTextBox.append(gameChoices)
+    gameChoices.appendChild(replay);
+    gameChoices.appendChild(gameOver);
+
+    replay.innerText = 'Play Again';
+    gameOver.innerText = 'End Game';
+
+    document.getElementById('game-container').innerHTML = '';
+    document.getElementById('keyboard').innerHTML = '';
 }
 
+
+/*-----------------------------------------------------GAMEPLAY-----------------------------------------------------*/
+
+
+/* Computer randomly chooses the word the player has to guess
+------------------------------------------------------------------------------------- */
+const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+const computerWordChoice = makeWordUppercase(randomWord);
+
+console.log(computerWordChoice);
+
 /* Game begins when the user clicks on the start button
-----------------------------------------------------------------------------------------------*/
+-----------------------------------------------------------------------*/
 const startGame = document.getElementById('startbtn');
 
 startGame.addEventListener('click', () => {
@@ -147,25 +228,5 @@ startGame.addEventListener('click', () => {
     createGameWindow();
 });
 
-/*--------------------------------------------------------------------*/
-function gameCompleted () {
-    if (i > d) {
-
-    }
-    document.getElementById('wordle-game-board').innerHTML = '';
-}
-
-
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
-
-
-// 1.a The program will make sure that the user is unable to add additional characters after entering five of them, unless they delete a character(s) they entered
-
-// 2.a The game checks to see if the word the user entered matches what the computer chose. If true, set gameOver to true, turn all tiles on that row green, and display a message that you won.
-
-// 2.b Otherwise, subract one from number of guesses
-    
-// 2.c The game will check to see if any character positions in the user's choice matches the computer's choice. If true, tiles will turn green
-
-// 2.d if not, the game will check to see if any characters in the user's choice appear in the computer's choice. If true, those tiles will turn yellow
