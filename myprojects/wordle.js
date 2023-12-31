@@ -3,7 +3,6 @@
 let numOfGuesses = 0;
 let playerGuessedWords = [[]];
 let tilesAvailable = 1;
-let gameOver = false;
 
 /* Initializing an array that contains all the choices the game can pick
 ------------------------------------------------------------------------- */
@@ -15,11 +14,6 @@ const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1)
 const computerWordChoice = makeWordUppercase(randomWord);
 
 console.log(computerWordChoice);
-
-
-
-
-
 
 /* Draw wordle board onto screen when the player presses the 
 Start Game button
@@ -58,7 +52,7 @@ function handleClick(buttonClick) {
 
 /*----------------------------------------------------------------------*/
 function submitPlayerGuess() {
-    let currentGuessArray = currentWordGuess();
+    const currentGuessArray = currentWordGuess();
 
     if (currentGuessArray.length !== 5) {
         window.alert("Word must be 5 letters");
@@ -78,7 +72,7 @@ function submitPlayerGuess() {
     });
 
     if (currentWordString === computerWordChoice) {
-        window.alert("You guessed correctly. Congratulations!");
+        gameCompleted();
     }
 
     if (playerGuessedWords.length === 6) {
@@ -89,13 +83,23 @@ function submitPlayerGuess() {
 }
 
 /*--------------------------------------------------------------------*/
+function removeLetter() {
+    const currentGuessArray = currentWordGuess();
+    const removedLetter = currentGuessArray.pop();
+
+    playerGuessedWords[playerGuessedWords.length - 1] = currentGuessArray;
+
+    const removedLetterEl = document.getElementById(String(tilesAvailable - 1))
+
+    removedLetterEl.innerText = '';
+    tilesAvailable--;
+}
+/*--------------------------------------------------------------------*/
 function tileGuessColor (key, i) {
     const correctLetter = computerWordChoice.includes(key);
     if (correctLetter !== true) {
         const incorrectLetterEl = document.getElementById(key);
-        console.log(incorrectLetterEl);
-        incorrectLetterEl.style.backgroundColor = 'blue';
-        incorrectLetterEl.removeEventListener('click', handleClick);
+        incorrectLetterEl.style.backgroundColor = 'gray';
         return 'red';
     }
 
@@ -144,6 +148,13 @@ startGame.addEventListener('click', () => {
 });
 
 /*--------------------------------------------------------------------*/
+function gameCompleted () {
+    if (i > d) {
+
+    }
+    document.getElementById('wordle-game-board').innerHTML = '';
+}
+
 
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
