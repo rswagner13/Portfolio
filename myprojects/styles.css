@@ -248,4 +248,8 @@ header {
         min-width: 4rem;
         min-height: 3rem;
     }
+
+    .page-tiles {
+        font-size: 22px;
+    }
 }

@@ -59,25 +59,26 @@ a {
 
 .about-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     color: var(--text-color);
-    height: 600px;
-    margin: 1rem;
+    height: 400px;
+    margin-top: 10px;
 }
 
 .about-container p {
     font-size: 20px;
-    padding: 4px;  
+    padding: 1rem;
 }
 
 .aboutme-blurb {
     text-align: center; 
-    width: 30%;
+    width: 60%;
 }
 
 .carousel-container {
     display: flex;
-    width: 50%;
+    flex-direction: row;
+    width: 80%;
 }
 
 .carousel-images {
@@ -158,6 +159,10 @@ a {
     #head-banner h1 {
         padding: 0.5rem;
         font-size: 52px;
+    }
+
+    .page-tiles {
+        font-size: 22px;
     }
 
 }

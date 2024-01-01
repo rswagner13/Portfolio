@@ -151,4 +151,8 @@ header {
         padding: 0.5rem;
         font-size: 52px;
     }
+
+    .page-tiles {
+        font-size: 22px;
+    }
 }

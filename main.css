@@ -136,4 +136,22 @@ a {
         padding: 0.2rem 0.5rem;
         font-size: 52px;
     }
+
+    .page-tiles {
+        font-size: 22px;
+    }
+
+    #welcome-info h2 {
+        font-size: 30px;
+        padding-bottom: 20px;
+    }
+
+    #welcome-info p {
+        font-size: 15px;
+    }
+
+    #main-container img {
+        height: 40%;
+        width: 40%;
+    }
 }
