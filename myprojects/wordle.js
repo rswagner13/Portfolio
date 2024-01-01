@@ -3,6 +3,7 @@
 let numOfGuesses = 0;
 let playerGuessedWords = [[]];
 let tilesAvailable = 1;
+let computerWordChoice = '';
 
 /* Importing the list of possible words for the computer to choose from
 ------------------------------------------------------------------------- */
@@ -46,7 +47,7 @@ function createGameWindow () {
 }
 
 /* Displays a modal with a good luck message for the player
---------------------------------------------------- */
+---------------------------------------------------------------------- */
 function gameStartMessage() {
     const wordleModalStart = document.getElementById('modal');
     wordleModalStart.style.display = 'flex';
@@ -79,11 +80,12 @@ function handleClick(buttonClick) {
     updateGameTile(buttonClick.target.innerText);
 }
 
-/* When the player clicks on the enter button
-----------------------------------------------------------------------*/
+/* When the player clicks on the enter button, multiple checks occur to see what the game should do
+------------------------------------------------------------------------------------------------------*/
 function submitPlayerGuess() {
     const currentGuessArray = currentWordGuess();
 
+    // Conditional check to see if the player entered enough characters to make a word
     if (currentGuessArray.length !== 5) {
         const modalBox = document.getElementById('modal');
         const modalTextBox = document.getElementById('modal-info');
@@ -101,10 +103,32 @@ function submitPlayerGuess() {
 
     } else {
         const currentWordString = currentGuessArray.join('');
+        let wordFromList = false;
+        // Compares the player's word to the list of words from the words.js file. 
+        for(let i = 0; i < wordleWords.length; i++) {
+            if (currentWordString.toLowerCase() === wordleWords[i]) {
+                wordFromList = true;
+            }
+        }
+        if (wordFromList !== true) {
+            const modalBox = document.getElementById('modal');
+            const modalTextBox = document.getElementById('modal-info');
+            const incorrectWordMessage = document.createElement('h1');
 
-        const firstWordLetter = numOfGuesses * 5 + 1;
-    
-        currentGuessArray.forEach((charKey, i) => {
+            incorrectWordMessage.classList.add('modal-text');
+            modalTextBox.appendChild(incorrectWordMessage);
+            modalBox.style.display = 'flex';
+            incorrectWordMessage.innerText = 'Error: Your word cannot be found on the list of acceptabe words. Please choose a different word';
+
+            setTimeout(() => {
+                modalTextBox.removeChild(incorrectWordMessage);
+                modalBox.style.display = 'none';
+            }, 2000);
+        } else {
+            // Checking each character of the current guessed word to see if any match or are within the computer's gussed word
+            const firstWordLetter = numOfGuesses * 5 + 1;
+            
+            currentGuessArray.forEach((charKey, i) => {
             const tileColor = tileGuessColor(charKey, i);
     
             const tileID = firstWordLetter + i;
@@ -122,6 +146,8 @@ function submitPlayerGuess() {
     
         playerGuessedWords.push([]);
         numOfGuesses++;
+        }
+
     }
 }
 
@@ -129,7 +155,7 @@ function submitPlayerGuess() {
 --------------------------------------------------------------------*/
 function removeLetter() {
     const currentGuessArray = currentWordGuess();
-    const removedLetter = currentGuessArray.pop();
+    currentGuessArray.pop();
 
     playerGuessedWords[playerGuessedWords.length - 1] = currentGuessArray;
 
@@ -139,27 +165,27 @@ function removeLetter() {
     tilesAvailable--;
 }
 
-/*
---------------------------------------------------------------------*/
+/* Changes the tile color depending on how close the player is to guessing the computer's word choice
+------------------------------------------------------------------------------------------------------*/
 function tileGuessColor (key, i) {
     const correctLetter = computerWordChoice.includes(key);
     if (correctLetter !== true) {
         const incorrectLetterEl = document.getElementById(key);
         incorrectLetterEl.style.backgroundColor = 'gray';
-        return 'red';
+        return 'rgb(235, 14, 124)';
     }
 
     const characterPosition = computerWordChoice.charAt(i);
     const isCorrectPosition = key === characterPosition;
 
     if (isCorrectPosition === true) {
-        return 'green';
+        return 'rgb(52, 250, 69)';
     }
     
-    return 'yellow';
+    return 'rgb(250, 229, 75)';
 }
 
-/* Checks to see the current guess the player is on
+/* Checks to see the player's current guess (based on the current array within the playerGuessedWords array)
 --------------------------------------------------------------------------*/
 function currentWordGuess () {
     const numWordsGuessed = playerGuessedWords.length;
@@ -196,9 +222,7 @@ function gameCompleted () {
         setTimeout(() => {
             modalTextBox.removeChild(winnerMessage);
             modalBox.style.display = 'none';
-            document.getElementById('game-container').innerHTML = '';
-            document.getElementById('keyboard').innerHTML = '';
-            startGame.style.display = 'block';
+            resetGame();
         }, 4000);
 
     } else {
@@ -207,9 +231,7 @@ function gameCompleted () {
         setTimeout(() => {
             modalTextBox.removeChild(winnerMessage);
             modalBox.style.display = 'none';
-            document.getElementById('game-container').innerHTML = '';
-            document.getElementById('keyboard').innerHTML = '';
-            startGame.style.display = 'block';
+            resetGame();
         }, 4000);
     }
 }
@@ -230,26 +252,36 @@ function gameOverMessage() {
     setTimeout(() => {
         modalTextBox.removeChild(loserMessage);
         modalBox.style.display = 'none';
-        document.getElementById('game-container').innerHTML = '';
-        document.getElementById('keyboard').innerHTML = '';
-        startGame.style.display = 'block';
+        resetGame();
     }, 4000);
 }
 
+/* Resets variables and elements to set the game board to how it was when the player first opened the "Portfolio" tab
+--------------------------------------------------------------------------------------------*/
+function resetGame() {
+    const wordleBoard = document.getElementById('wordle-game-board');
+    const keyboardKeys = document.getElementById('keyboard');
+
+    wordleBoard.innerHTML = '';
+    wordleBoard.style.border = 'none';
+    keyboardKeys.style.display = 'none';
+    startGame.style.display = 'block';
+
+    numOfGuesses = 0;
+    playerGuessedWords = [[]];
+    tilesAvailable = 1;
+}
 
 /*-----------------------------------------------------GAMEPLAY-----------------------------------------------------*/
 
-
-/* Computer will get a random word from the words.js file
---------------------------------------------------------------------*/
-const computerWordChoice = generateWordleWord();
-console.log(computerWordChoice);
 
 /* Game begins when the user clicks on the start button
 -----------------------------------------------------------------------*/
 const startGame = document.getElementById('startbtn');
 
 startGame.addEventListener('click', () => {
+    computerWordChoice = generateWordleWord();
+    console.log(computerWordChoice);
     startGame.style.display = 'none';
     createGameWindow();
 });
