@@ -12,13 +12,20 @@ import {wordleWords} from './words.js';
 /*---------------------------------------------FUNCTIONS-------------------------------------------------------------*/
 
 
+/* Generates the word the player must guess
+------------------------------------------------------------*/
+function generateWordleWord () {
+    const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
+    return makeWordUppercase(randomWord);
+}
+
 /* Makes the word that the computer randomly chose uppercase 
 --------------------------------------------------------------------*/
 function makeWordUppercase(wordChoice) {
     return wordChoice.toUpperCase();
 }
 
-/* Draw wordle board onto screen when the player presses the start button
+/* Draws wordle board onto the screen after the player presses the start button
 --------------------------------------------------- */
 function createGameWindow () {
     gameStartMessage();
@@ -72,7 +79,8 @@ function handleClick(buttonClick) {
     updateGameTile(buttonClick.target.innerText);
 }
 
-/*----------------------------------------------------------------------*/
+/* When the player clicks on the enter button
+----------------------------------------------------------------------*/
 function submitPlayerGuess() {
     const currentGuessArray = currentWordGuess();
 
@@ -115,10 +123,10 @@ function submitPlayerGuess() {
         playerGuessedWords.push([]);
         numOfGuesses++;
     }
-
 }
 
-/*--------------------------------------------------------------------*/
+/* Deletes any letters in the previous cell when the delete button is pressed
+--------------------------------------------------------------------*/
 function removeLetter() {
     const currentGuessArray = currentWordGuess();
     const removedLetter = currentGuessArray.pop();
@@ -131,7 +139,8 @@ function removeLetter() {
     tilesAvailable--;
 }
 
-/*--------------------------------------------------------------------*/
+/*
+--------------------------------------------------------------------*/
 function tileGuessColor (key, i) {
     const correctLetter = computerWordChoice.includes(key);
     if (correctLetter !== true) {
@@ -150,13 +159,15 @@ function tileGuessColor (key, i) {
     return 'yellow';
 }
 
-/*--------------------------------------------------------------------*/
+/* Checks to see the current guess the player is on
+--------------------------------------------------------------------------*/
 function currentWordGuess () {
     const numWordsGuessed = playerGuessedWords.length;
     return playerGuessedWords[numWordsGuessed-1];
 }
 
-/*--------------------------------------------------------------------*/
+/* Places the letter represented by the button pressed, and puts it into the next available game tile, if there are any spaces remaining
+-----------------------------------------------------------------------------------------------------------------*/
 function updateGameTile(buttonLetter) {
     const currentWord = currentWordGuess();
     if (currentWord && currentWord.length < 5) {
@@ -169,54 +180,69 @@ function updateGameTile(buttonLetter) {
     }
 }
 
-/*--------------------------------------------------------------------*/
+/* Prints a message when the player correctly guesses the word the computer randomly picked
+----------------------------------------------------------------------------------------------*/
 function gameCompleted () {
     const modalBox = document.getElementById('modal');
     const modalTextBox = document.getElementById('modal-info');
     const winnerMessage = document.createElement('h1');
-    const gameChoices = document.createElement('div');
-    const replay = document.createElement('div');
-    const gameOver = document.createElement('div');
 
     modalBox.style.display = 'flex';
     winnerMessage.classList.add('modal-text');
     modalTextBox.appendChild(winnerMessage);
 
     if ((numOfGuesses + 1) === 1) {
-        winnerMessage.innerText = `Holy cow! You guessed the correct word in one guess! Would you like to play again?`;
+        winnerMessage.innerText = `Holy cow! You guessed the correct word in one guess! Nice job!`;
+        setTimeout(() => {
+            modalTextBox.removeChild(winnerMessage);
+            modalBox.style.display = 'none';
+            document.getElementById('game-container').innerHTML = '';
+            document.getElementById('keyboard').innerHTML = '';
+            startGame.style.display = 'block';
+        }, 4000);
 
-        gameChoices.setAttribute('id','choice-container');
-        modalTextBox.append(gameChoices)
-        gameChoices.appendChild(replay);
-        gameChoices.appendChild(gameOver);
-
-    replay.innerText = 'Play Again';
-    gameOver.innerText = 'End Game';
+    } else {
+        winnerMessage.innerText = `Congratulations, you guessed the correct word in ${numOfGuesses + 1} guesses!`;
+    
+        setTimeout(() => {
+            modalTextBox.removeChild(winnerMessage);
+            modalBox.style.display = 'none';
+            document.getElementById('game-container').innerHTML = '';
+            document.getElementById('keyboard').innerHTML = '';
+            startGame.style.display = 'block';
+        }, 4000);
     }
+}
 
-    winnerMessage.innerText = `Congratulations, you guessed the correct word in ${numOfGuesses + 1} guesses! Would you like to play again?`;
+/* Prints out a message when the player is unable to correctly guess the word the computer randomly picked
+--------------------------------------------------------------------------------------------------------------*/
+function gameOverMessage() {
+    const modalBox = document.getElementById('modal');
+    const modalTextBox = document.getElementById('modal-info');
+    const loserMessage = document.createElement('h1');
 
-    gameChoices.setAttribute('id','choice-container');
-    modalTextBox.append(gameChoices)
-    gameChoices.appendChild(replay);
-    gameChoices.appendChild(gameOver);
+    modalBox.style.display = 'flex';
+    loserMessage.classList.add('modal-text');
+    modalTextBox.appendChild(loserMessage);
 
-    replay.innerText = 'Play Again';
-    gameOver.innerText = 'End Game';
+    loserMessage.innerText = `Awe too bad, you didn't guess the word. The word was ${computerWordChoice}. Thanks for playing!`;
 
-    document.getElementById('game-container').innerHTML = '';
-    document.getElementById('keyboard').innerHTML = '';
+    setTimeout(() => {
+        modalTextBox.removeChild(loserMessage);
+        modalBox.style.display = 'none';
+        document.getElementById('game-container').innerHTML = '';
+        document.getElementById('keyboard').innerHTML = '';
+        startGame.style.display = 'block';
+    }, 4000);
 }
 
 
 /*-----------------------------------------------------GAMEPLAY-----------------------------------------------------*/
 
 
-/* Computer randomly chooses the word the player has to guess
-------------------------------------------------------------------------------------- */
-const randomWord = wordleWords[Math.floor(Math.random() * (wordleWords.length-1))];
-const computerWordChoice = makeWordUppercase(randomWord);
-
+/* Computer will get a random word from the words.js file
+--------------------------------------------------------------------*/
+const computerWordChoice = generateWordleWord();
 console.log(computerWordChoice);
 
 /* Game begins when the user clicks on the start button
@@ -228,5 +254,7 @@ startGame.addEventListener('click', () => {
     createGameWindow();
 });
 
+/* Adds event listeners to each keyboard button drawn onto the screen
+--------------------------------------------------------------------------*/
 let computerKeys = document.getElementById('keyboard-keys');
 computerKeys.addEventListener('click', handleClick);
