@@ -1,1 +1,3 @@
-# Unit 1 Project - Portfolio Website
+# **Unit 1 Project - Portfolio Website**
+
+### :memo: :pencil Description
