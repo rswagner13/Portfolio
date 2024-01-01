@@ -157,12 +157,12 @@ a {
     }
 
     #head-banner h1 {
-        padding: 0.5rem;
-        font-size: 52px;
+        padding: 0.2rem 0.5rem;
+        font-size: 40px;
     }
 
     .page-tiles {
-        font-size: 22px;
+        font-size: 18px;
     }
 
 }

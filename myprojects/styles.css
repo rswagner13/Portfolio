@@ -218,7 +218,8 @@ header {
 
 @media (max-width: 600px) {
     #head-banner h1 {
-        padding: 0.5rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 40px;
     }
 
     header {
@@ -250,6 +251,6 @@ header {
     }
 
     .page-tiles {
-        font-size: 22px;
+        font-size: 18px;
     }
 }

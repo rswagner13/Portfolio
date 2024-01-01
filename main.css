@@ -134,20 +134,20 @@ a {
 @media (max-width: 600px) {
     #head-banner h1 {
         padding: 0.2rem 0.5rem;
-        font-size: 52px;
+        font-size: 40px;
     }
 
     .page-tiles {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     #welcome-info h2 {
         font-size: 30px;
-        padding-bottom: 20px;
+        padding-bottom: 18px;
     }
 
     #welcome-info p {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     #main-container img {
