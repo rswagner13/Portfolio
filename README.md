@@ -41,7 +41,7 @@ Since this is a website, there's nothing to install in order to access this.
 </p>
 
 ### 🧔‍♂️👩 User Stories
-* As a friend of Mour, I really want to see what it's like being a software engineer and what kind of cool projects he's been working on.
+* As a friend of Mour's, I really want to see what it's like being a software engineer and what kind of cool projects he's been working on.
 * As a hiring manager, I want to see what the candidate has created and feels is important to show to others. From there, I can obtain an understanding of the candidate's understanding of software engineering and if they're able to do the work we need to them do.
 
 ### 📷 Screenshots
