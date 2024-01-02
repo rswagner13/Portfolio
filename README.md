@@ -71,4 +71,6 @@ Since this is a website, there's nothing to install in order to access this.
 ### ▶️ Next Steps
 --- 
 * Add a function to my Wordle game that will compare number of letters players guess vs the computer's guess (ie if the player guess "boots" and the computer chose "donut", only the first "o" would be colored.)
+* Refractor Wordle code
+* Add another game to my website
 * Fix the layout of the website, maybe even make it a single page rather than multiple pages
