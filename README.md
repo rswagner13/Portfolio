@@ -27,6 +27,11 @@
   This is a portfilio website that I built for myself as my Unit 1 Project. It contains a home page, a page providing some background information about myself, a page that contains a version of Wordle, and a page that has links to my socials and resume.
 </p>
 
+### ⬇️ Installation
+---
+Since this is a website, there's nothing to install in order to access this.
+
+
 ### 🖥️ Technologies Used
 <p>
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
